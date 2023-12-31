@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:my_app_flutter_1/screen/login/login.dart';
-import 'package:my_app_flutter_1/screen/signup/signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,14 +21,24 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         fontFamily: 'Roboto', // Add a default font family
       ),
-      home: HomePage(),
+      home: LandingPage(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Menambahkan delay 3 detik sebelum berpindah ke LoginScreen
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
+    });
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -76,7 +85,7 @@ class HomePage extends StatelessWidget {
                   height: 20,
                 ),
                 Text(
-                  "Sajikan kelezatan dalam genggaman Anda. Cara baru menikmati pengalaman kuliner di Warung Cak Andik. Mulai sekarang, pesan, ambil, dan nikmati!",
+                  "Sajian Khas Warung Penyetan dan Sari Laut Lamongan! Rasakan Kenikmatan yang Menggoyang Lidah, Kelezatan yang Memanjakan Selera. Hanya di Sini, Setiap Gigitan Menyajikan Pengalaman Kuliner Tak Terlupakan",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey[700],
@@ -98,72 +107,18 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   height: 60,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.teal,
-                    onPrimary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                        "Login",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignupScreen(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: Colors.teal,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      side: BorderSide(color: Colors.teal),
-                    ),
+                Text(
+                  "Sajikan kelezatan dalam genggaman Anda. Cara baru menikmati pengalaman kuliner di Warung Cak Andik. Mulai sekarang, pesan, ambil, dan nikmati!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[700],
+                    fontSize: 20,
                   ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                        "Sign up",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+                ),
               ],
             ),
           ),

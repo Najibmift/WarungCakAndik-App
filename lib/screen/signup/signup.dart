@@ -5,18 +5,27 @@ import 'package:flutter/services.dart';
 import 'package:my_app_flutter_1/screen/login/login.dart';
 import 'package:my_app_flutter_1/api/firebase_api.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   final AuthService _authService = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmController = TextEditingController();
+  bool isLoading = false;
 
   Future<void> onPressedSignUp(BuildContext context) async {
     try {
       if (_formKey.currentState!.validate()) {
         // Validate form fields
+        setState(() {
+          isLoading = true; // Set loading to true when signup starts
+        });
 
         // Check if password and confirm password match
         if (passwordController.text != confirmController.text) {
@@ -40,6 +49,9 @@ class SignupScreen extends StatelessWidget {
         bool isUsernameTaken =
             await isUsernameAlreadyTaken(usernameController.text);
         if (isUsernameTaken) {
+          setState(() {
+            isLoading = false; // Set loading to true when signup starts
+          });
           _showErrorDialog(
             context,
             'The entered username is already taken. Please choose another one.',
@@ -55,11 +67,13 @@ class SignupScreen extends StatelessWidget {
         );
 
         // Show success dialog
+        setState(() {
+          isLoading = false; // Set loading to true when signup starts
+        });
         _showSuccessDialog(context);
 
         // Delay for a moment to let the success dialog display
         await Future.delayed(Duration(seconds: 2));
-
         // Navigate to login screen
         Navigator.pushReplacement(
           context,
@@ -165,6 +179,9 @@ class SignupScreen extends StatelessWidget {
 
     if (error is FirebaseAuthException) {
       if (error.code == 'email-already-in-use') {
+        setState(() {
+          isLoading = false; // Set loading to true when signup starts
+        });
         errorMessage = 'The entered email is already registered.';
       } else {
         errorMessage = 'Error: ${error.message}';
@@ -194,166 +211,175 @@ class SignupScreen extends StatelessWidget {
         ),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40),
-        height: MediaQuery.of(context).size.height - 50,
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("lib/assets/logo.png"),
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "Sign up",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.teal,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Create an account, It's free ",
-                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
                     Column(
                       children: <Widget>[
-                        NormalField(
-                          label: "Username",
-                          icon: Icons.person,
-                          controller: usernameController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Username is required';
-                            }
-                            return null;
-                          },
-                        ),
-                        NormalField(
-                          label: "Email",
-                          icon: Icons.email,
-                          controller: emailController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Email is required';
-                            }
-                            return null;
-                          },
-                        ),
-                        PasswordField(
-                          label: "Password",
-                          obscureText: true,
-                          icon: Icons.lock,
-                          onToggleVisibility: () {},
-                          controller: passwordController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Password is required';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        PasswordField(
-                          label: "Confirm Password",
-                          obscureText: true,
-                          icon: Icons.lock,
-                          onToggleVisibility: () {},
-                          controller: confirmController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Confirm Password is required';
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        gradient: LinearGradient(
-                          colors: [Colors.teal, Colors.teal.shade700],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                      ),
-                      child: MaterialButton(
-                        onPressed: () {
-                          _formKey.currentState!.save(); // Save the form state
-                          onPressedSignUp(context);
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Already have an account?"),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              " Login",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                  color: Colors.teal),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("lib/assets/logo.png"),
+                              fit: BoxFit.fitHeight,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          "Sign up",
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Create an account, It's free ",
+                          style:
+                              TextStyle(fontSize: 15, color: Colors.grey[700]),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Column(
+                          children: <Widget>[
+                            NormalField(
+                              label: "Username",
+                              icon: Icons.person,
+                              controller: usernameController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Username is required';
+                                }
+                                return null;
+                              },
+                            ),
+                            NormalField(
+                              label: "Email",
+                              icon: Icons.email,
+                              controller: emailController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Email is required';
+                                }
+                                return null;
+                              },
+                            ),
+                            PasswordField(
+                              label: "Password",
+                              obscureText: true,
+                              icon: Icons.lock,
+                              onToggleVisibility: () {},
+                              controller: passwordController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Password is required';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            PasswordField(
+                              label: "Confirm Password",
+                              obscureText: true,
+                              icon: Icons.lock,
+                              onToggleVisibility: () {},
+                              controller: confirmController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Confirm Password is required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            gradient: LinearGradient(
+                              colors: [Colors.teal, Colors.teal.shade700],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                          ),
+                          child: MaterialButton(
+                            onPressed: () {
+                              _formKey.currentState!
+                                  .save(); // Save the form state
+                              onPressedSignUp(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: isLoading
+                                ? CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  )
+                                : Text(
+                                    "Sign Up",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Already have an account?"),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  " Login",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Colors.teal),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    )
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

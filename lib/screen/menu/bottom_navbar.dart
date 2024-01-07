@@ -1,6 +1,12 @@
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
+import 'package:my_app_flutter_1/screen/menu/home/home.dart';
+import 'package:my_app_flutter_1/screen/menu/account/account.dart';
+import 'package:my_app_flutter_1/screen/menu/monitor/monitor.dart';
+import 'package:my_app_flutter_1/screen/menu/pesanan/pesanan.dart';
+import 'package:my_app_flutter_1/screen/menu/home/details/details.dart';
+import 'package:my_app_flutter_1/screen/menu/food_menu/menu.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,8 +16,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Circular Bottom Navigation Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
+      routes: {
+        'details': (context) => Details(),
+      },
       home: Directionality(
         textDirection: TextDirection.ltr,
         child: MyHomePage(title: 'circular_bottom_navigation'),
@@ -113,21 +122,15 @@ class _MyHomePageState extends State<MyHomePage> {
     IconData icon;
     switch (selectedPos) {
       case 0:
-        slogan = "Family, Happiness, Food";
-        icon = Icons.home;
-        break;
+        return Home();
       case 1:
-        slogan = "Find, Check, Use";
-        icon = Icons.search;
-        break;
+        return Menu();
       case 2:
-        slogan = "Receive, Review, Rip";
-        icon = Icons.layers;
-        break;
+        return Monitoring();
       case 3:
-        slogan = "Noise, Panic, Ignore";
-        icon = Icons.notifications;
-        break;
+        return Pesanan();
+      case 4:
+        return Account();
       default:
         slogan = "";
         icon = Icons.home;

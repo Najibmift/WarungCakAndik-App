@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_app_flutter_1/screen/menu/pesanan/cart_provider.dart';
+import 'package:my_app_flutter_1/services/authGate.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'package:my_app_flutter_1/screen/login/login.dart';
+import 'package:my_app_flutter_1/screen/menu/home/details/details.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CartProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,31 +28,47 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         fontFamily: 'Roboto', // Add a default font family
+        primaryColor: Colors.teal,
       ),
+      routes: {
+        'details': (context) => Details(),
+      },
       home: LandingPage(),
     );
   }
 }
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
+  @override
+  _LandingPageState createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    // Add additional initialization tasks if needed
+    await Future.delayed(const Duration(seconds: 3));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AuthGate(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Menambahkan delay 3 detik sebelum berpindah ke LoginScreen
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    });
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,7 +96,7 @@ class LandingPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(
+                const Text(
                   "Warung Cak Andik App",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -81,7 +105,7 @@ class LandingPage extends StatelessWidget {
                     fontSize: 30,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Text(
@@ -92,22 +116,22 @@ class LandingPage extends StatelessWidget {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height / 3,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("lib/assets/logo.png"),
                       fit: BoxFit.contain,
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 60,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Text(

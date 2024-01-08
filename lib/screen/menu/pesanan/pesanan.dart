@@ -12,22 +12,6 @@ class Pesanan extends StatefulWidget {
 class _CartState extends State<Pesanan> with TickerProviderStateMixin {
   late TabController _tabController;
   final AuthService _authService = AuthService();
-  // final List<Map<String, String>> foods = [
-  //   {
-  //     'name': 'Rice and meat',
-  //     'price': '130.00',
-  //     'rate': '4.8',
-  //     'clients': '150',
-  //     'image': 'lib/assets/logo.png'
-  //   },
-  //   {
-  //     'name': 'Vegan food',
-  //     'price': '400.00',
-  //     'rate': '4.2',
-  //     'clients': '150',
-  //     'image': 'lib/assets/logo.png'
-  //   },
-  // ];
 
   @override
   void initState() {
@@ -69,7 +53,7 @@ class _CartState extends State<Pesanan> with TickerProviderStateMixin {
                             width: 100,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage(food['image']!),
+                                image: NetworkImage(food['image']!),
                               ),
                             ),
                           ),
@@ -190,7 +174,7 @@ class _CartState extends State<Pesanan> with TickerProviderStateMixin {
                         width: 100,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(food['image']!),
+                            image: NetworkImage(food['image']!),
                           ),
                         ),
                       ),
@@ -269,7 +253,7 @@ class _CartState extends State<Pesanan> with TickerProviderStateMixin {
                         width: 100,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(food['image']!),
+                            image: NetworkImage(food['image']!),
                           ),
                         ),
                       ),
@@ -285,14 +269,14 @@ class _CartState extends State<Pesanan> with TickerProviderStateMixin {
                                     const EdgeInsets.symmetric(vertical: 5.0),
                                 child: Text(food['name']!),
                               ),
-                              Text('\$${food['price']}'),
+                              Text('\$${food['price']}'.toString()),
                               Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Text(food['rate']!),
+                                      Text(food['rate']!.toString()),
                                       Text(
                                         'Give your review',
                                         style: TextStyle(
@@ -414,7 +398,7 @@ class _CartState extends State<Pesanan> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  this.renderDoneOrder(),
+                  renderDoneOrder(),
                 ],
               ),
             ),

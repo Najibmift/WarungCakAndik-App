@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app_flutter_1/components/food_card.dart';
+import 'menu_service.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -7,50 +8,34 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  // Define two lists for food and drinks
-  final List<Map<String, String>> foodList = [
-    {
-      'name': 'Tandoori Chicken',
-      'price': '96.00',
-      'rate': '4.9',
-      'clients': '200',
-      'image': 'lib/assets/logo.png'
-    },
-    {
-      'name': 'Salmon',
-      'price': '40.50',
-      'rate': '4.5',
-      'clients': '168',
-      'image': 'lib/assets/logo.png'
-    },
-    {
-      'name': 'Rice and meat',
-      'price': '130.00',
-      'rate': '4.8',
-      'clients': '150',
-      'image': 'lib/assets/logo.png'
-    },
-  ]; // Your food list
-  final List<Map<String, String>> drinkList = [
-    {
-      'name': 'Vegan food',
-      'price': '400.00',
-      'rate': '4.2',
-      'clients': '150',
-      'image': 'lib/assets/logo.png'
-    },
-    {
-      'name': 'Rich food',
-      'price': '1000.00',
-      'rate': '4.6',
-      'clients': '10',
-      'image': 'lib/assets/logo.png'
-    }
-  ]; // Your drink list
-
+  final MenuFirestoreService firestoreService = MenuFirestoreService();
+  List<Map<String, dynamic>> foodList = [];
+  List<Map<String, dynamic>> drinkList = [];
   int _selectedTabIndex = 0; // 0 for food, 1 for drinks
 
-  List<Map<String, String>> get selectedCategoryList =>
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() async {
+    try {
+      String productId =
+          "bqJVNQzXcYYq3Ch3hpjw"; // Replace with the actual productId
+
+      foodList = await firestoreService.getFoodList(productId);
+      drinkList = await firestoreService.getDrinkList(productId);
+
+      setState(() {});
+      print(drinkList);
+      print(foodList);
+    } catch (error) {
+      print('Error loading data: $error');
+    }
+  }
+
+  List<Map<String, dynamic>> get selectedCategoryList =>
       _selectedTabIndex == 0 ? foodList : drinkList;
 
   @override
@@ -101,7 +86,7 @@ class _MenuState extends State<Menu> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    Map<String, String> product = selectedCategoryList[index];
+                    Map<String, dynamic> product = selectedCategoryList[index];
                     return GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(
@@ -118,11 +103,11 @@ class _MenuState extends State<Menu> {
                         child: FoodCard(
                           width: (size.width - 60.0) / 2,
                           primaryColor: theme.primaryColor,
-                          productName: product['name']!,
-                          productPrice: product['price']!,
-                          productUrl: product['image']!,
-                          productClients: product['clients']!,
-                          productRate: product['rate']!,
+                          productName: product['name'].toString(),
+                          productPrice: product['price'].toString(),
+                          productUrl: product['image'].toString(),
+                          productClients: product['clients'].toString(),
+                          productRate: product['rate'].toString(),
                         ),
                       ),
                     );

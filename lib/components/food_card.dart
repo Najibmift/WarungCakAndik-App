@@ -34,7 +34,7 @@ class FoodCard extends StatelessWidget {
                 height: 140.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(productUrl),
+                    image: NetworkImage(productUrl),
                   ),
                 ),
               ),

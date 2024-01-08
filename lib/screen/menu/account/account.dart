@@ -166,7 +166,7 @@ class _AccountState extends State<Account> with TickerProviderStateMixin {
                           child: Row(
                             children: <Widget>[
                               Icon(
-                                Icons.location_on,
+                                Icons.person_2_outlined,
                                 size: 30.0,
                                 color: theme.primaryColor,
                               ),
@@ -175,7 +175,7 @@ class _AccountState extends State<Account> with TickerProviderStateMixin {
                                   horizontal: 15.0,
                                 ),
                                 child: Text(
-                                  'Location',
+                                  'Change Profile',
                                   style: TextStyle(fontSize: 24.0),
                                 ),
                               )
@@ -196,7 +196,7 @@ class _AccountState extends State<Account> with TickerProviderStateMixin {
                           child: Row(
                             children: <Widget>[
                               Icon(
-                                Icons.local_shipping,
+                                Icons.email_outlined,
                                 size: 30.0,
                                 color: theme.primaryColor,
                               ),
@@ -205,7 +205,7 @@ class _AccountState extends State<Account> with TickerProviderStateMixin {
                                   horizontal: 15.0,
                                 ),
                                 child: Text(
-                                  'Shipping',
+                                  'Change Email',
                                   style: TextStyle(fontSize: 24.0),
                                 ),
                               )
@@ -226,7 +226,7 @@ class _AccountState extends State<Account> with TickerProviderStateMixin {
                           child: Row(
                             children: <Widget>[
                               Icon(
-                                Icons.account_balance_wallet,
+                                Icons.key,
                                 size: 30.0,
                                 color: theme.primaryColor,
                               ),
@@ -235,7 +235,7 @@ class _AccountState extends State<Account> with TickerProviderStateMixin {
                                   horizontal: 15.0,
                                 ),
                                 child: Text(
-                                  'Payment',
+                                  'Change Password',
                                   style: TextStyle(fontSize: 24.0),
                                 ),
                               )
@@ -243,29 +243,32 @@ class _AccountState extends State<Account> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                          ),
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
-                                color: Colors.grey.shade300,
+                                color: Colors.grey.shade100,
                               ),
                             ),
                           ),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                'Location Tracking',
-                                style: TextStyle(fontSize: 24.0),
+                              Icon(
+                                Icons.food_bank_outlined,
+                                size: 30.0,
+                                color: theme.primaryColor,
                               ),
-                              Switch(
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    this.switchValue = value;
-                                  });
-                                },
-                                value: this.switchValue,
-                                activeColor: theme.primaryColor,
-                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 15.0,
+                                ),
+                                child: Text(
+                                  'Your Favorite',
+                                  style: TextStyle(fontSize: 24.0),
+                                ),
+                              )
                             ],
                           ),
                         ),

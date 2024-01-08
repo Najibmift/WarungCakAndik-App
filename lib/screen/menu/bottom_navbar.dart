@@ -65,8 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     ),
     TabItem(
-      Icons.monitor,
-      "Monitor",
+      Icons.table_restaurant_rounded,
+      "Table Monitor",
       Colors.teal,
       labelStyle: TextStyle(
         color: Colors.teal,

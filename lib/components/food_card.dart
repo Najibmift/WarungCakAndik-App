@@ -31,7 +31,7 @@ class FoodCard extends StatelessWidget {
           Stack(
             children: <Widget>[
               Container(
-                height: 140.0,
+                height: 90.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(productUrl),
@@ -111,7 +111,7 @@ class FoodCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '\$ $productPrice',
+                  '\Rp.  $productPrice',
                   style: TextStyle(
                     fontSize: 13.0,
                   ),

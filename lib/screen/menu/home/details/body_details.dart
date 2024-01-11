@@ -4,6 +4,7 @@ import 'package:my_app_flutter_1/components/custom_header.dart';
 import 'package:my_app_flutter_1/screen/menu/pesanan/cart_provider.dart';
 import 'package:provider/provider.dart';
 import 'cart_service.dart';
+import 'package:my_app_flutter_1/screen/menu/pesanan/cart_provider.dart';
 
 Widget iconBadge({required IconData icon, required Color iconColor}) {
   return Container(
@@ -186,11 +187,16 @@ class _BodyDetailsState extends State<BodyDetails>
       length: 2,
       vsync: this,
     );
+    String? userId = _authService.getCurrentUserUid();
+    if (userId != null) {
+      Provider.of<CartProvider>(context, listen: false).fetchCartData(userId);
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
     final Map screenArguments =
         ModalRoute.of(context)?.settings.arguments as Map;
     Map product = screenArguments['product']!;
@@ -202,8 +208,8 @@ class _BodyDetailsState extends State<BodyDetails>
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           CustomHeader(
-            title: '',
-            quantity: this.quantity,
+            title: 'Cart Food',
+            quantity: cartProvider.cartItems.length,
             internalScreen: true,
           ),
           Container(
@@ -260,7 +266,7 @@ class _BodyDetailsState extends State<BodyDetails>
                             style: TextStyle(fontSize: 18.0),
                           ),
                           Text(
-                            '\$ ${product['price']}',
+                            '\Rp.  ${product['price']}',
                             style: TextStyle(fontSize: 18.0),
                           ),
                         ],
@@ -305,40 +311,10 @@ class _BodyDetailsState extends State<BodyDetails>
                         Container(
                           width: 50.0,
                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: TextField(
+                          child: Text(
+                            quantity.toString(),
                             textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            controller:
-                                _textEditingController, // Gunakan controller
-                            onChanged: (value) {
-                              // Handle onChanged event
-                              if (value.isEmpty) {
-                                setState(() {
-                                  _textEditingController.value =
-                                      TextEditingValue(
-                                    text: '0',
-                                    selection:
-                                        TextSelection.collapsed(offset: 1),
-                                  );
-                                });
-                              } else if (value.isNotEmpty) {
-                                int parsedValue = int.parse(value);
-                                setState(() {
-                                  quantity = parsedValue;
-                                  _textEditingController.value =
-                                      _textEditingController.value.copyWith(
-                                    text: parsedValue.toString(),
-                                    selection: TextSelection.collapsed(
-                                        offset: value.length),
-                                  );
-                                });
-                              }
-                            },
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding:
-                                  EdgeInsets.symmetric(vertical: 5.0),
-                            ),
+                            style: TextStyle(fontSize: 18.0),
                           ),
                         ),
                         GestureDetector(
@@ -368,7 +344,7 @@ class _BodyDetailsState extends State<BodyDetails>
                         String? uid = _authService.getCurrentUserUid();
                         FirestoreService firestoreService = FirestoreService();
                         await firestoreService.addToCart(
-                            uid!, product.cast<String, dynamic>());
+                            uid!, product.cast<String, dynamic>(), quantity);
                       },
                       style: ElevatedButton.styleFrom(
                         primary: theme.primaryColor,

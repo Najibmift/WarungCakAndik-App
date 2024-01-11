@@ -76,42 +76,53 @@ class _MenuState extends State<Menu> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 20.0,
-                    mainAxisSpacing: 20.0,
-                  ),
-                  itemCount: selectedCategoryList.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    Map<String, dynamic> product = selectedCategoryList[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          'details',
-                          arguments: {
-                            'product': product,
-                            'index': index,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 20.0,
+                        mainAxisSpacing: 20.0,
+                      ),
+                      itemCount: selectedCategoryList.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        Map<String, dynamic> product =
+                            selectedCategoryList[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              'details',
+                              arguments: {
+                                'product': product,
+                                'index': index,
+                              },
+                            );
                           },
+                          child: Hero(
+                            tag: 'detail_food$index',
+                            child: FoodCard(
+                              width: (size.width - 60.0) / 2,
+                              primaryColor: theme.primaryColor,
+                              productName: product['name'].toString(),
+                              productPrice: product['price'].toString(),
+                              productUrl: product['image'].toString(),
+                              productClients: product['clients'].toString(),
+                              productRate: product['rate'].toString(),
+                            ),
+                          ),
                         );
                       },
-                      child: Hero(
-                        tag: 'detail_food$index',
-                        child: FoodCard(
-                          width: (size.width - 60.0) / 2,
-                          primaryColor: theme.primaryColor,
-                          productName: product['name'].toString(),
-                          productPrice: product['price'].toString(),
-                          productUrl: product['image'].toString(),
-                          productClients: product['clients'].toString(),
-                          productRate: product['rate'].toString(),
-                        ),
-                      ),
-                    );
-                  },
+                    ),
+                    if (foodList.isEmpty && drinkList.isEmpty)
+                      CircularProgressIndicator(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
                 ),
               ),
             ),

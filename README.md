@@ -1,16 +1,11 @@
-# my_app_flutter_1
+# Warung Cak Andik App
 
-A new Flutter project.
+Warung Cak Andik App adalah aplikasi pemesanan makanan dan minuman berbasis Android yang dikembangkan untuk membantu digitalisasi proses pemesanan di warung makan tradisional. Aplikasi ini memungkinkan pelanggan melihat menu, melakukan pemesanan, dan membantu pihak warung dalam mengelola pesanan secara lebih efisien.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Fitur
+1. Autentikasi pengguna (Login & Register)
+2. Daftar menu makanan dan minuman
+3. Pemesanan menu dan cart pesanan
+4. Monitoring status meja (kosong, dipesan, digunakan)
+5. Tracking dan status pesanan
+6. Manajemen akun pengguna

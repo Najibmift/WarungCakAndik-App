@@ -83,10 +83,5 @@ Sementara pihak warung dapat:
 
 ---
 
-## 📁 Repository
-🔗 https://github.com/Najibmift/WarungCakAndik-App/
-
----
-
 ## ⚠ Catatan
 Aplikasi ini dikembangkan untuk keperluan **akademik dan pembelajaran**, serta belum mencakup fitur pengiriman (delivery).
